@@ -39,7 +39,7 @@ resource "aws_subnet" "main" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
+  security_group_id = aws_security_group.first_party_cookies.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   ip_protocol       = "tcp"
@@ -47,16 +47,24 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
+  security_group_id = aws_security_group.first_party_cookies.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
   ip_protocol       = "tcp"
   to_port           = 443
 }
 
-resource "aws_security_group" "allow_tls" {
-  name        = "allow_tls"
-  description = "Allow TLS inbound traffic"
+resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4" {
+  security_group_id = aws_security_group.first_party_cookies.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 22
+  ip_protocol       = "tcp"
+  to_port           = 22
+}
+
+resource "aws_security_group" "first_party_cookies" {
+  name        = "first_party_cookies"
+  description = "first_party_cookies inbound traffic"
   vpc_id      = aws_vpc.main.id
   egress {
     from_port        = 0
@@ -67,17 +75,34 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
+resource "aws_key_pair" "first-party-cookies" {
+  key_name   = "first-party-cookies"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+
 resource "aws_instance" "test" {
   ami = data.aws_ami.this.id
-  vpc_security_group_ids = [ aws_security_group.allow_tls.id ]
+  vpc_security_group_ids = [ aws_security_group.first_party_cookies.id ]
+  subnet_id = aws_subnet.main.id
+  instance_type = "t4g.nano"
   instance_market_options {
     market_type = "spot"
+    spot_options {
+      max_price = 0.005
+    }
   }
-  instance_type = "t4g.nano"
   tags = {
     Name = "first-party-cookies"
   }
-  subnet_id = aws_subnet.main.id
+  key_name = aws_key_pair.first-party-cookies.key_name
+  user_data = <<-EOF
+    #!/bin/bash
+    sudo yum update -y
+    sudo amazon-linux-extras install nginx1 -y 
+    sudo systemctl enable nginx
+    sudo systemctl start nginx
+    echo "<h1>Hello, World!</h1>" > /usr/share/nginx/html/index.html
+  EOF
 }
 
 output "public_dns" {

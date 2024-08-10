@@ -17,7 +17,7 @@ resource "aws_key_pair" "first-party-cookies" {
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
-resource "aws_instance" "test" {
+resource "aws_instance" "first_party" {
   ami = data.aws_ami.this.id
   vpc_security_group_ids = [ aws_security_group.first_party_cookies.id ]
   subnet_id = aws_subnet.main.id
@@ -32,20 +32,36 @@ resource "aws_instance" "test" {
     Name = "first-party-cookies"
   }
   key_name = aws_key_pair.first-party-cookies.key_name
-  user_data = <<-EOF
-    #!/bin/bash
-    sudo yum update -y
-    sudo yum install nginx -y
-    sudo systemctl enable nginx
-    sudo systemctl start nginx
-    echo "<h1>Hello, World!</h1>" > /usr/share/nginx/html/index.html
-  EOF
+
+  connection {
+    type        = "ssh"
+    host        = aws_instance.first_party.public_ip
+    user        = "ec2-user"
+    private_key = file("~/.ssh/id_rsa")
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum update -y",
+      "sudo yum install nginx -y",
+      "sudo systemctl enable nginx",
+      "sudo systemctl start nginx",
+      "sudo systemctl start nginx",
+      "sudo chown ec2-user:ec2-user /usr/share/nginx/html",
+      "sudo rm -r /usr/share/nginx/html/*",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "../src/first-party/"
+    destination = "/usr/share/nginx/html"
+  }
 }
 
 output "public_dns" {
-  value = "${aws_instance.test.public_dns}"
+  value = "${aws_instance.first_party.public_dns}"
 }
 
 output "public_ip" {
-  value = "${aws_instance.test.public_ip}"
+  value = "${aws_instance.first_party.public_ip}"
 }

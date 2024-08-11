@@ -40,21 +40,18 @@ resource "aws_instance" "first_party" {
     private_key = file("~/.ssh/id_rsa")
   }
 
+  provisioner "file" {
+    source      = "../dist/first-party/"
+    destination = "/home/ec2-user"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
-      "sudo yum install nginx -y",
-      "sudo systemctl enable nginx",
-      "sudo systemctl start nginx",
-      "sudo systemctl start nginx",
-      "sudo chown ec2-user:ec2-user /usr/share/nginx/html",
-      "sudo rm -r /usr/share/nginx/html/*",
+      "sudo yum install nodejs npm -y",
+      "sudo npm install pm2 -g",
+      "sudo pm2 start bundle.js --watch",
     ]
-  }
-
-  provisioner "file" {
-    source      = "../src/first-party/"
-    destination = "/usr/share/nginx/html"
   }
 }
 
@@ -81,21 +78,18 @@ resource "aws_instance" "third_party" {
     private_key = file("~/.ssh/id_rsa")
   }
 
+  provisioner "file" {
+    source      = "../dist/third-party/"
+    destination = "/home/ec2-user"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
-      "sudo yum install nginx -y",
-      "sudo systemctl enable nginx",
-      "sudo systemctl start nginx",
-      "sudo systemctl start nginx",
-      "sudo chown ec2-user:ec2-user /usr/share/nginx/html",
-      "sudo rm -r /usr/share/nginx/html/*",
+      "sudo yum install nodejs npm -y",
+      "sudo npm install pm2 -g",
+      "sudo pm2 start bundle.js --watch",
     ]
-  }
-
-  provisioner "file" {
-    source      = "../src/third-party/"
-    destination = "/usr/share/nginx/html"
   }
 }
 

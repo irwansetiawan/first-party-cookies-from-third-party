@@ -24,10 +24,10 @@ class ScpWebpackPlugin {
                 if (!this.options.password && !this.options.privateKey) {
                     reject('Missing password or privateKey');
                 }
+                console.log('Uploading files to ' + this.options.host);
                 Client(this.options).then(async (client) => {
                     if (this.options.dirs) {
                         for (const dir of this.options.dirs) {
-                            console.log(dir);
                             await client.uploadDir(dir.from, dir.to);
                             console.log(dir.from + ' transferred to ' + dir.to);
                         }

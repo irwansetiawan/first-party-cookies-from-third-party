@@ -49,7 +49,7 @@ const config1p: webpack.Configuration = Object.assign({}, baseConfig, {
       username: 'ec2-user',
       privateKey: fs.readFileSync(os.homedir + '/.ssh/id_rsa', 'utf8'),
       dirs: [
-        { from: './dist/first-party/', to: '/usr/share/nginx/html/' }
+        { from: './dist/first-party/', to: '/home/ec2-user/' }
       ]
     }),
   ],
@@ -72,7 +72,7 @@ const config3p: webpack.Configuration = Object.assign({}, baseConfig, {
       username: 'ec2-user',
       privateKey: fs.readFileSync(os.homedir + '/.ssh/id_rsa', 'utf8'),
       dirs: [
-        { from: './dist/third-party/', to: '/usr/share/nginx/html/' }
+        { from: './dist/third-party/', to: '/home/ec2-user/' }
       ]
     }),
   ],

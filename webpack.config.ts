@@ -48,6 +48,7 @@ const config1p: webpack.Configuration = Object.assign({}, baseConfig, {
     new CopyWebpackPlugin({
       patterns: [
         { from: './src/first-party/static', to: 'static' },
+        { from: './ssl', to: 'ssl' },
         { from: './.env', to: './' },
       ]
     }),
@@ -72,6 +73,7 @@ const config3p: webpack.Configuration = Object.assign({}, baseConfig, {
     new CopyWebpackPlugin({
       patterns: [
         { from: './src/third-party/static', to: 'static' },
+        { from: './ssl', to: 'ssl' },
         { from: './.env', to: './' },
       ]
     }),

@@ -2,6 +2,12 @@ import path from 'path';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import ScpWebpackPlugin from './webpack/scp-webpack-plugin';
+import fs from 'fs';
+import os from 'os';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const baseConfig: webpack.Configuration = {
   mode: 'production',
@@ -37,7 +43,15 @@ const config1p: webpack.Configuration = Object.assign({}, baseConfig, {
       patterns: [
         { from: './src/first-party/static', to: 'static' }
       ]
-    })
+    }),
+    new ScpWebpackPlugin({
+      host: process.env.FIRST_PARTY_PUBLIC_DNS as string,
+      username: 'ec2-user',
+      privateKey: fs.readFileSync(os.homedir + '/.ssh/id_rsa', 'utf8'),
+      dirs: [
+        { from: './dist/first-party/', to: '/usr/share/nginx/html/' }
+      ]
+    }),
   ],
 });
 
@@ -52,7 +66,15 @@ const config3p: webpack.Configuration = Object.assign({}, baseConfig, {
       patterns: [
         { from: './src/third-party/static', to: 'static' }
       ]
-    })
+    }),
+    new ScpWebpackPlugin({
+      host: process.env.THIRD_PARTY_PUBLIC_DNS as string,
+      username: 'ec2-user',
+      privateKey: fs.readFileSync(os.homedir + '/.ssh/id_rsa', 'utf8'),
+      dirs: [
+        { from: './dist/third-party/', to: '/usr/share/nginx/html/' }
+      ]
+    }),
   ],
 });
 

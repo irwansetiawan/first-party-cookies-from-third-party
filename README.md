@@ -14,9 +14,17 @@ terraform init
 terraform apply
 ```
 
-When completed, there will be 2 public DNS in the output that can be used, for example:
+When completed, there will be 2 public DNS in the output, for example:
 
 ```
-first_party_public_dns = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
-third_party_public_dns = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
+FIRST_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
+THIRD_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
+```
+
+Add the 2 domains into `.env` (remove the whitespaces before and after the `=` sign)
+
+Run watch command to start development, the updated files will be automatically updated to the remote servers:
+
+```
+npm run watch
 ```

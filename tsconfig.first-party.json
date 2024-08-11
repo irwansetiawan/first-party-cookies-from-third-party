@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist/first-party"
+    },
+    "files": [
+        "./src/first-party/index.ts"
+    ],
+}

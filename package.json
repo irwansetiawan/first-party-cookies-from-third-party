@@ -1,0 +1,16 @@
+{
+  "name": "first-party-cookies-from-third-party-context",
+  "version": "1.0.0",
+  "description": "Environment to test third-party capabilities on first-party context",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:first-party && npm run build:third-party",
+    "build:first-party": "tsc --project tsconfig.first-party.json",
+    "build:third-party": "tsc --project tsconfig.third-party.json"
+  },
+  "author": "irwan@irwansetiawan.com",
+  "license": "GNU GPL 3.0",
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,9 +1,9 @@
 import express from 'express';
-import path from 'path';
+import staticMiddleware from '../shared/static.middleware';
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname + '/static')));
+app.use(staticMiddleware); // handle static files
 
 app.listen(80, () => {
   console.log('[Third-Party] Server started');

@@ -15,10 +15,11 @@ const baseConfig: webpack.Configuration = {
   resolve: {
     modules: [
         'node_modules',
-    ]
+    ],
+    extensions: ['.ts', '.js'],
   },
   node: {
-    __dirname: false,
+    //__dirname: false,
   },
   optimization: {
     minimizer: [new TerserPlugin({
@@ -29,6 +30,11 @@ const baseConfig: webpack.Configuration = {
         },
       },
     })],
+  },
+  module: {
+    rules: [
+      { test: /\.ts$/, use: 'ts-loader', exclude: /node_modules/ },
+    ],
   },
 }
 
@@ -41,7 +47,8 @@ const config1p: webpack.Configuration = Object.assign({}, baseConfig, {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: './src/first-party/static', to: 'static' }
+        { from: './src/first-party/static', to: 'static' },
+        { from: './.env', to: './' },
       ]
     }),
     new ScpWebpackPlugin({
@@ -64,7 +71,8 @@ const config3p: webpack.Configuration = Object.assign({}, baseConfig, {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: './src/third-party/static', to: 'static' }
+        { from: './src/third-party/static', to: 'static' },
+        { from: './.env', to: './' },
       ]
     }),
     new ScpWebpackPlugin({

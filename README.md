@@ -6,9 +6,11 @@ Requirements
 * Configure AWS CLI with `aws configure` and enter AWS access key
 * Ensure SSH key is set up at `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`. Otherwise, set it up with `ssh-keygen -t ed25519 -C "your_email@example.com"`
 
-First step, initialize and apply infrastructure on AWS with terraform:
+First step, build the source, initialize and apply infrastructure on AWS with terraform:
 
 ```
+npm run build
+
 npm run tf:init
 npm run tf:apply
 ```

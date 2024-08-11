@@ -33,6 +33,6 @@ function getContentType(url: string): string {
 
 function replaceContent(content: string): string {
     return content
-            .replace('{{FIRST_PARTY_PUBLIC_DNS}}', process.env.FIRST_PARTY_PUBLIC_DNS as string)
-            .replace('{{THIRD_PARTY_PUBLIC_DNS}}', process.env.THIRD_PARTY_PUBLIC_DNS as string);
+            .replace(/{{FIRST_PARTY_PUBLIC_DNS}}/g, process.env.FIRST_PARTY_PUBLIC_DNS as string)
+            .replace(/{{THIRD_PARTY_PUBLIC_DNS}}/g, process.env.THIRD_PARTY_PUBLIC_DNS as string);
 }

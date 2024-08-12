@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import https from 'https';
 import http from 'http';
-import { generateCert } from '../shared/generate-cert';
+import fs from 'fs';
 
 dotenv.config({ path: path.resolve(path.join(__dirname, '.env')) });
 
@@ -15,11 +15,9 @@ http.createServer((req, res) => {
   res.end();
 }).listen(80);
 
-const cert = generateCert();
-
 https.createServer({
-  key: cert.private,
-  cert: cert.cert,
+  key: fs.readFileSync(path.resolve(path.join(__dirname, 'key.pem'))),
+  cert: fs.readFileSync(path.resolve(path.join(__dirname, 'cert.pem'))),
 }, app).listen(443, function(){
   console.log("[First-Party] Server listening on port 443");
 });

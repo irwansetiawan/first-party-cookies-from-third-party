@@ -22,7 +22,7 @@ FIRST_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.c
 THIRD_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
 ```
 
-Add the 2 domains into `.env` (remove the whitespaces before and after the `=` sign)
+Add the 2 domains into `.env`
 
 Run watch command to start development, the updated files will be automatically updated to the remote servers:
 

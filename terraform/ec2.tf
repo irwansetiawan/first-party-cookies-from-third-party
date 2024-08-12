@@ -48,6 +48,9 @@ resource "aws_instance" "first_party" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
+      "TOKEN=`curl -X PUT \"http://169.254.169.254/latest/api/token\" -H \"X-aws-ec2-metadata-token-ttl-seconds: 21600\"`",
+      "PUBLIC_HOSTNAME=`curl -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/public-hostname`",
+      "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj \"/C=SG/ST=Singapore/L=Singapore/O=Irwan/OU=Irwan/CN=$PUBLIC_HOSTNAME\"",
       "sudo yum install nodejs npm -y",
       "sudo npm install pm2 -g",
       "sudo pm2 start bundle.js --watch",
@@ -86,6 +89,9 @@ resource "aws_instance" "third_party" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum update -y",
+      "TOKEN=`curl -X PUT \"http://169.254.169.254/latest/api/token\" -H \"X-aws-ec2-metadata-token-ttl-seconds: 21600\"`",
+      "PUBLIC_HOSTNAME=`curl -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/public-hostname`",
+      "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj \"/C=SG/ST=Singapore/L=Singapore/O=Irwan/OU=Irwan/CN=$PUBLIC_HOSTNAME\"",
       "sudo yum install nodejs npm -y",
       "sudo npm install pm2 -g",
       "sudo pm2 start bundle.js --watch",

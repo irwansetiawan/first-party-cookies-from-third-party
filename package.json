@@ -1,5 +1,5 @@
 {
-  "name": "first-party-cookies-from-third-party-context",
+  "name": "third-party-context",
   "version": "1.0.0",
   "description": "Environment to test third-party capabilities on first-party context",
   "main": "index.js",

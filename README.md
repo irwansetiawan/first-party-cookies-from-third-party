@@ -1,31 +1,49 @@
+# Third Party Context
+
+This repository aims to establish a testing environment for interactions between two distinct parties:
+* First-party: The URL that a user visits.
+* Third-party: A URL invoked from within the first-party context, typically in the form of a script or tracking pixel.
+
+With the rise of privacy features in major web browsers, third-party entities face significant limitations. This test environment empowers developers to evaluate third-party capabilities within various browser contexts.
+
 # Initializing Test Environment
 
-Requirements
+## Prerequisites
 
-* AWS CLI
-* Configure AWS CLI with `aws configure` and enter AWS access key
-* Ensure SSH key is set up at `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`. Otherwise, set it up with `ssh-keygen -t ed25519 -C "your_email@example.com"`
+Before you begin, ensure you have the following:
+* **AWS CLI**: The Amazon Web Services Command Line Interface.
+* **AWS Configuration**: Run `aws configure` to set up your AWS access key.
+* **SSH Key**: Verify that your SSH key is located at `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`. If you do not have an SSH key, generate one using:
+    ```
+    ssh-keygen -t ed25519 -C "your_email@example.com"
+    ```
 
-First step, build the source, initialize and apply infrastructure on AWS with terraform:
+## Setup Instructions
 
-```
-npm run build
+1. **Build the source code**: Start by building the source code:
 
-npm run tf:init
-npm run tf:apply
-```
+    ```
+    npm run build
+    ```
 
-When completed, there will be 2 public DNS in the output, for example:
+2. **Initialize AWS**: Initialize the test infrastructure on AWS using Terraform:
 
-```
-FIRST_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
-THIRD_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
-```
+    ```
+    npm run tf:init
+    npm run tf:apply
+    ```
 
-Add the 2 domains into `.env`
+3. **Output Verification**: Upon successful execution, you will receive two public DNS addresses in the output, for example:
 
-Run watch command to start development, the updated files will be automatically updated to the remote servers:
+    ```
+    FIRST_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
+    THIRD_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
+    ```
 
-```
-npm run watch
-```
+3. **Environment Configuration**: Add the two DNS addresses to your `.env` file for configuration.
+
+4. **Start Development**: To initiate the development process, run the watch command. This will ensure that any changes made to the files are automatically synchronized with the remote servers:
+
+    ```
+    npm run watch
+    ```

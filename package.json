@@ -6,7 +6,7 @@
   "scripts": {
     "tf:init": "cd terraform && terraform init",
     "tf:apply": "cd terraform && terraform apply",
-    "tf:destroy": "cd terraform && terraform destroy",
+    "tf:destroy": "cd terraform && terraform destroy --auto-approve",
     "build": "webpack --config webpack.config.ts",
     "watch": "webpack --watch --config webpack.config.ts"
   },

@@ -13,7 +13,8 @@ data "aws_ami" "this" {
 }
 
 resource "aws_key_pair" "main" {
-  key_name   = "first-party-cookies"
+  key_name   = var.project_name
+  tags = { Name = var.project_name }
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
@@ -28,9 +29,7 @@ resource "aws_instance" "first_party" {
       max_price = 0.005
     }
   }
-  tags = {
-    Name = "first-party-cookies"
-  }
+  tags = { Name = var.project_name }
   key_name = aws_key_pair.main.key_name
 
   connection {
@@ -69,9 +68,7 @@ resource "aws_instance" "third_party" {
       max_price = 0.005
     }
   }
-  tags = {
-    Name = "first-party-cookies"
-  }
+  tags = { Name = var.project_name }
   key_name = aws_key_pair.main.key_name
 
   connection {
@@ -97,12 +94,4 @@ resource "aws_instance" "third_party" {
       "sudo pm2 start bundle.js --watch",
     ]
   }
-}
-
-output "FIRST_PARTY_PUBLIC_DNS" {
-  value = "${aws_instance.first_party.public_dns}"
-}
-
-output "THIRD_PARTY_PUBLIC_DNS" {
-  value = "${aws_instance.third_party.public_dns}"
 }

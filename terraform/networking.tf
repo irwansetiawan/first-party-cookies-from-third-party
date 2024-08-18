@@ -1,6 +1,6 @@
 
 resource "aws_vpc" "main" {
-  tags = { Name = "first-party-cookies" }
+  tags = { Name = var.project_name }
   cidr_block = "10.0.0.0/16"
   enable_dns_hostnames = true
 }
@@ -11,14 +11,14 @@ resource "aws_main_route_table_association" "main" {
 }
 
 resource "aws_subnet" "main" {
-  tags = { Name = "first-party-cookies" }
+  tags = { Name = var.project_name }
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.0.0/24"
   map_public_ip_on_launch = true
 }
 
 resource "aws_route_table" "main" {
-  tags = { Name = "first-party-cookies" }
+  tags = { Name = var.project_name }
   vpc_id = aws_vpc.main.id
   route {
     cidr_block = "0.0.0.0/0"
@@ -27,11 +27,12 @@ resource "aws_route_table" "main" {
 }
 
 resource "aws_internet_gateway" "main" {
-  tags = { Name = "first-party-cookies" }
+  tags = { Name = var.project_name }
   vpc_id = aws_vpc.main.id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
+  tags = { Name = var.project_name }
   security_group_id = aws_security_group.main.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -40,6 +41,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
+  tags = { Name = var.project_name }
   security_group_id = aws_security_group.main.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
@@ -48,6 +50,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4" {
+  tags = { Name = var.project_name }
   security_group_id = aws_security_group.main.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
@@ -56,8 +59,9 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4" {
 }
 
 resource "aws_security_group" "main" {
-  name        = "first_party_cookies"
-  description = "first_party_cookies inbound traffic"
+  tags = { Name = var.project_name }
+  name        = var.project_name
+  description = format("%s %s", var.project_name, "inbound traffic")
   vpc_id      = aws_vpc.main.id
   egress {
     from_port        = 0

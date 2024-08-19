@@ -24,6 +24,11 @@ https.createServer({
 
 app.use(staticMiddleware); // handle static files
 
+app.get('/3p-pixel-1p', (req: Request, res: Response) => {
+  res.cookie('3p', '3p-in-1p-domain', { domain: process.env.FIRST_PARTY_PUBLIC_DNS, sameSite: 'none', secure: true });
+  res.send();
+});
+
 app.get('/3p-pixel', (req: Request, res: Response) => {
   res.cookie('3p', '3p-in-3p-domain', { domain: process.env.THIRD_PARTY_PUBLIC_DNS, sameSite: 'none', secure: true });
   res.send();

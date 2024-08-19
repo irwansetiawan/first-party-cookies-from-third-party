@@ -1,6 +1,6 @@
-# Third Party Context
+# Third Party Context Playground
 
-This repository aims to establish a testing environment for interactions between two distinct parties:
+This repository aims to establish a testing environment for interactions between two parties:
 * First-party: The URL that a user visits.
 * Third-party: A URL invoked from within the first-party context, typically in the form of a script or tracking pixel.
 

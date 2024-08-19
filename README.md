@@ -33,17 +33,19 @@ Before you begin, ensure you have the following:
     npm run tf:apply
     ```
 
-3. **Output Verification**: Upon successful execution, you will receive two public DNS addresses in the output, for example:
+3. **Output Verification**: Upon successful execution, you will receive two public DNS addresses in the output, and will be automatically written to `.env`, for example:
 
     ```
-    FIRST_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
-    THIRD_PARTY_PUBLIC_DNS = "ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com"
+    FIRST_PARTY_PUBLIC_DNS=ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com
+    THIRD_PARTY_PUBLIC_DNS=ec2-000-000-000-000.ap-southeast-1.compute.amazonaws.com
     ```
-
-3. **Environment Configuration**: Add the two DNS addresses to your `.env` file for configuration.
 
 4. **Start Development**: To initiate the development process, run the watch command. This will ensure that any changes made to the files are automatically synchronized with the remote servers:
 
     ```
     npm run watch
     ```
+
+5. **Open in Browser**:
+    * Copy the value of `FIRST_PARTY_PUBLIC_DNS` and paste in your browser. Ignore any security warning and accept the self-signed certificate.
+    * Your third-party calls from first-party context will also be blocked by default. To accept the self-signed certificate for the third-party domain, copy and paste the value of `THIRD_PARTY_PUBLIC_DNS` in a separate tab and accept its certificate.

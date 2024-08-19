@@ -1,7 +1,7 @@
 import { Client } from 'node-scp';
 
 interface ScpWebpackPluginOptions { // extending options from node-scp options https://www.npmjs.com/package/node-scp
-    host: string;
+    host: string | undefined;
     username: string;
     password?: string;
     privateKey?: string;
@@ -16,6 +16,7 @@ class ScpWebpackPlugin {
     }
 
     apply(compiler: any) {
+        if (!this.options.host) return;
         compiler.hooks.afterEmit.tapPromise('ScpWebpackPlugin', (compilation: any) => {
             return new Promise((resolve, reject) => {
                 if (!this.options.host || !this.options.username) {

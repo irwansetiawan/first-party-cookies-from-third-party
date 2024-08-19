@@ -7,7 +7,13 @@ import fs from 'fs';
 import os from 'os';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+if (fs.existsSync(path.resolve(__dirname, '.env'))) {
+  dotenv.config({ path: path.resolve(__dirname, '.env') });
+} else {
+  console.warn("No .env file found, build only, no upload will be performed.");
+  process.env.FIRST_PARTY_PUBLIC_DNS = '';
+  process.env.THIRD_PARTY_PUBLIC_DNS = '';
+}
 
 const baseConfig: webpack.Configuration = {
   mode: 'production',
@@ -48,11 +54,11 @@ const config1p: webpack.Configuration = Object.assign({}, baseConfig, {
     new CopyWebpackPlugin({
       patterns: [
         { from: './src/first-party/static', to: 'static' },
-        { from: './.env', to: './' },
+        { from: './.env', to: './', noErrorOnMissing: true },
       ]
     }),
     new ScpWebpackPlugin({
-      host: process.env.FIRST_PARTY_PUBLIC_DNS as string,
+      host: process.env.FIRST_PARTY_PUBLIC_DNS,
       username: 'ec2-user',
       privateKey: fs.readFileSync(os.homedir + '/.ssh/id_rsa', 'utf8'),
       dirs: [
@@ -72,11 +78,11 @@ const config3p: webpack.Configuration = Object.assign({}, baseConfig, {
     new CopyWebpackPlugin({
       patterns: [
         { from: './src/third-party/static', to: 'static' },
-        { from: './.env', to: './' },
+        { from: './.env', to: './', noErrorOnMissing: true },
       ]
     }),
     new ScpWebpackPlugin({
-      host: process.env.THIRD_PARTY_PUBLIC_DNS as string,
+      host: process.env.THIRD_PARTY_PUBLIC_DNS,
       username: 'ec2-user',
       privateKey: fs.readFileSync(os.homedir + '/.ssh/id_rsa', 'utf8'),
       dirs: [

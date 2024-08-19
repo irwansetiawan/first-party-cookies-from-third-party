@@ -11,7 +11,7 @@ With the rise of privacy features in major web browsers, third-party entities fa
 ## Prerequisites
 
 Before you begin, ensure you have the following:
-* **AWS CLI**: The Amazon Web Services Command Line Interface.
+* **AWS CLI**: The Amazon Web Services [Command Line Interface (CLI)](https://aws.amazon.com/cli/).
 * **AWS Configuration**: Run `aws configure` to set up your AWS access key.
 * **SSH Key**: Verify that your SSH key is located at `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`. If you do not have an SSH key, generate one using:
     ```

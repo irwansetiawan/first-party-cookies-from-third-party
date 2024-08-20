@@ -7,7 +7,7 @@
         <h1>First Party Domain</h1>
         <p>This is a first party domain that contains third-party script.</p>
         <script src="//{{THIRD_PARTY_PUBLIC_DNS}}/third-party.js"></script>
-        <script>setCookie && setCookie('from-1p-html-call-3p-func', 'from_html')</script>
+        <script>setCookie && setCookie('3p-cookie', '3p-cookie-set-by-1p-invocation-of-3p-script')</script>
         <script>getCookies && getCookies()</script>
 
         <h2>First-party pixel below</h2>

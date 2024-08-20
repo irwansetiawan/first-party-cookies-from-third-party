@@ -9,5 +9,5 @@ const getCookies = function() {
     return document.cookie;
 }
 
-setCookie('from-3p-js', 'true');
+setCookie('3p-cookie', '3p-cookie-set-by-3p-script');
 getCookies();

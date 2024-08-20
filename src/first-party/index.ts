@@ -25,6 +25,6 @@ https.createServer({
 app.use(staticMiddleware); // handle static files
 
 app.get('/1p-pixel', (req: Request, res: Response) => {
-  res.cookie('1p', '1p', { domain: process.env.FIRST_PARTY_PUBLIC_DNS, sameSite: 'none', secure: true });
+  res.cookie('1p-cookie', '1p-cookie-set-by-1p', { domain: process.env.FIRST_PARTY_PUBLIC_DNS, sameSite: 'none', secure: true });
   res.send();
 });
